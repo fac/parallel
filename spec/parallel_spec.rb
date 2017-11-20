@@ -53,6 +53,17 @@ describe Parallel do
         defined?(Etc).should == "constant"
       end
     end
+
+    it "reads PARALLEL_PROCESSOR_COUNT when set" do
+      ENV['PARALLEL_PROCESSOR_COUNT'] = "23"
+      Parallel.processor_count.should == 23
+      ENV.delete 'PARALLEL_PROCESSOR_COUNT'
+    end
+
+    it "ignores PARALLEL_PROCESSOR_COUNT when not set" do
+      ENV.delete 'PARALLEL_PROCESSOR_COUNT'
+      Parallel.processor_count.should_not == 23
+    end
   end
 
   describe ".physical_processor_count" do
