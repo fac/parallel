@@ -20,7 +20,9 @@ module Parallel
     #
     def processor_count
       @processor_count ||= begin
-        if defined?(Etc) && Etc.respond_to?(:nprocessors)
+        if ENV.key? 'PARALLEL_PROCESSOR_COUNT'
+          ENV['PARALLEL_PROCESSOR_COUNT'].to_i
+        elsif defined?(Etc) && Etc.respond_to?(:nprocessors)
           Etc.nprocessors
         else
           os_name = RbConfig::CONFIG["target_os"]
